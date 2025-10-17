@@ -5,7 +5,7 @@ import numpy as np
 csv_file_path = "C:/Users/Aritrajit Roy/Documents/programming_for_DS_Bath/finalysis/data/all_stocks_5yr.csv"
 
 # Load data
-data, headers = load_data(csv_file_path)
+data = load_data(csv_file_path)
 def numeric_stats(data):
     # Determine numeric columns
     if data.dtype.names is not None:  # structured array
