@@ -1,6 +1,5 @@
 import numpy as np
 import matplotlib.pyplot as plt
-import seaborn as sns
 from finalysis.metrics.stock_pairs_trading_analysis import run_analysis, daily_returns, spread_zscore
 import matplotlib.dates as mdates
 
@@ -107,12 +106,26 @@ def plot_top_pairs_heatmap(prices, stock_names, top_pairs, unique_dates):
     top_returns = returns[:, indices_unique]
     corr_matrix = np.corrcoef(top_returns.T)
 
-    plt.figure(figsize=(10,8))
-    sns.heatmap(corr_matrix, annot=True, fmt=".2f", cmap='coolwarm',
-                xticklabels=top_names_unique, yticklabels=top_names_unique)
+    fig, ax = plt.subplots(figsize=(10,8))
+    im = ax.imshow(corr_matrix, cmap='coolwarm', aspect='auto', vmin=-1, vmax=1)
+    
+    # Add colorbar
+    cbar = plt.colorbar(im, ax=ax)
+    cbar.set_label('Correlation', rotation=270, labelpad=15)
+    
+    # Set ticks and labels
+    ax.set_xticks(np.arange(len(top_names_unique)))
+    ax.set_yticks(np.arange(len(top_names_unique)))
+    ax.set_xticklabels(top_names_unique, rotation=45, ha='right')
+    ax.set_yticklabels(top_names_unique, rotation=0)
+    
+    # Add correlation values as text annotations
+    for i in range(len(top_names_unique)):
+        for j in range(len(top_names_unique)):
+            text = ax.text(j, i, f'{corr_matrix[i, j]:.2f}',
+                          ha="center", va="center", color="black" if abs(corr_matrix[i, j]) < 0.5 else "white")
+    
     plt.title("Correlation Heatmap of Top Arbitrage Pairs")
-    plt.xticks(rotation=45)
-    plt.yticks(rotation=0)
     plt.tight_layout()
     plt.show()
 
