@@ -1,11 +1,11 @@
 from finalysis.data_loader.data_loader import load_data
 import numpy as np
 
-# Path to your CSV file
-csv_file_path = "C:/Users/Aritrajit Roy/Documents/programming_for_DS_Bath/finalysis/data/all_stocks_5yr.csv"
+# # Path to your CSV file
+# csv_file_path = "C:/Users/Aritrajit Roy/Documents/programming_for_DS_Bath/finalysis/data/all_stocks_5yr.csv"
 
-# Load data
-data = load_data(csv_file_path)
+# # Load data
+# data = load_data(csv_file_path)
 def numeric_stats(data):
     # Determine numeric columns
     if data.dtype.names is not None:  # structured array
@@ -33,4 +33,4 @@ def numeric_stats(data):
         print(f"  Median : {median_val:.4f}")
         print(f"  Mode   : {mode_val}")
         print(f"  StdDev : {std_val:.4f}\n")
-numeric_stats(data)
+# numeric_stats(data)

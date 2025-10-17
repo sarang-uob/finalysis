@@ -2,10 +2,10 @@ from finalysis.data_loader.data_loader import load_data
 import numpy as np
 
 # Path to your CSV file
-csv_file_path = "C:/Users/Aritrajit Roy/Documents/programming_for_DS_Bath/finalysis/data/all_stocks_5yr.csv"
+# csv_file_path = "C:/Users/Aritrajit Roy/Documents/programming_for_DS_Bath/finalysis/data/all_stocks_5yr.csv"
 
-# Load data
-data = load_data(csv_file_path)
+# # Load data
+# data = load_data(csv_file_path)
 
 
 
@@ -49,4 +49,4 @@ def describe_dataset(data):
         print(data[:5])
 
 
-describe_dataset(data)
+# describe_dataset( data)

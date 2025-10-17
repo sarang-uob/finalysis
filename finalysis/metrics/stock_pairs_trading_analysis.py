@@ -81,9 +81,9 @@ def evaluate_pairs(prices, stock_names, corr_threshold=0.9):
     scores.sort(key=lambda x: x[0], reverse=True)
     return scores[:5]
 
-def run_analysis(csv_file_path='/Users/filippofoggi/Desktop/finalysis/data/all_stocks_5yr.csv', corr_threshold=0.85):
+def run_analysis(data, corr_threshold=0.85):
     # Load data
-    data = load_data(csv_file_path)
+    # data = load_data(csv_file_path)
     names_all = data['Name']
     dates_all = data['date']
     close_all = data['close']

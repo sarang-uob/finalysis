@@ -5,14 +5,15 @@ from finalysis.metrics.stock_pairs_trading_analysis import run_analysis, daily_r
 import matplotlib.dates as mdates
 
 # === Run metrics analysis to get data ===
-prices, stock_names, top_pairs, unique_dates = run_analysis()
+# prices, stock_names, top_pairs, unique_dates = run_analysis()
 
 # Convert dates to numpy datetime64
-dates_np = np.array(unique_dates, dtype='datetime64[D]')
+# dates_np = np.array(unique_dates, dtype='datetime64[D]')
 
 # === 1. Price Series of All Stocks ===
-def plot_price_series():
+def plot_price_series(prices, stock_names, unique_dates):
     plt.figure(figsize=(14,6))
+    dates_np = np.array(unique_dates, dtype='datetime64[D]')
     for i, name in enumerate(stock_names):
         plt.plot(dates_np, prices[:, i], alpha=0.7)
     plt.title("Price Series of All Stocks")
@@ -24,7 +25,7 @@ def plot_price_series():
     plt.show()
 
 # === 2. Scatter Plots of Top Correlated Pairs ===
-def plot_top_pairs_scatter():
+def plot_top_pairs_scatter(prices, stock_names, top_pairs):
     returns = daily_returns(prices)
     for score, name1, name2 in top_pairs:
         i = np.where(stock_names == name1)[0][0]
@@ -39,7 +40,8 @@ def plot_top_pairs_scatter():
         plt.show()
 
 # === 3. Spread and Z-score Plots for Top Pairs ===
-def plot_spread_zscore():
+def plot_spread_zscore(prices , stock_names, top_pairs, unique_dates):
+    dates_np = np.array(unique_dates, dtype='datetime64[D]')
     for score, name1, name2 in top_pairs:
         i = np.where(stock_names == name1)[0][0]
         j = np.where(stock_names == name2)[0][0]
@@ -69,7 +71,8 @@ def plot_spread_zscore():
         plt.show()
 
 # === 4. Cumulative Returns of Top Pairs ===
-def plot_cumulative_returns():
+def plot_cumulative_returns(prices, stock_names, top_pairs, unique_dates):
+    dates_np = np.array(unique_dates, dtype='datetime64[D]')
     returns = daily_returns(prices)
     for score, name1, name2 in top_pairs:
         i = np.where(stock_names == name1)[0][0]
@@ -88,7 +91,7 @@ def plot_cumulative_returns():
         plt.show()
 
 # === 5. Heatmap delle top arbitrage pairs ===
-def plot_top_pairs_heatmap():
+def plot_top_pairs_heatmap(prices, stock_names, top_pairs, unique_dates):
     returns = daily_returns(prices)
     top_names = []
     indices = []
