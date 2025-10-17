@@ -1,34 +1,6 @@
-import finalysis
 import numpy as np
-
 from finalysis.data_loader.data_loader import load_data
 
-data = load_data('data/all_stocks_5yr.csv')
-names_all = data['Name']  # Assuming structured array
-dates_all = data['date']
-close_all = data['close']
-
-unique_names = np.unique(names_all)
-unique_dates = np.unique(dates_all)
-n_dates = len(unique_dates)
-n_stocks = len(unique_names)
-
-# === Build price matrix ===
-prices = np.full((n_dates, n_stocks), np.nan)
-for j, name in enumerate(unique_names):
-    mask = names_all == name
-    stock_dates = dates_all[mask]
-    stock_prices = close_all[mask]
-    for d, p in zip(stock_dates, stock_prices):
-        idx = np.where(unique_dates == d)[0][0]
-        prices[idx, j] = p
-
-# === Remove columns (stocks) with missing data ===
-valid = ~np.isnan(prices).any(axis=0)
-prices = prices[:, valid]
-stock_names = unique_names[valid]
-
-# ==== Pair Trading Evaluation Functions ====
 def daily_returns(prices):
     return (prices[1:] / prices[:-1]) - 1
 
@@ -109,7 +81,37 @@ def evaluate_pairs(prices, stock_names, corr_threshold=0.9):
     scores.sort(key=lambda x: x[0], reverse=True)
     return scores[:5]
 
-# === Run evaluation and print pairs ===
-top_pairs = evaluate_pairs(prices, stock_names, corr_threshold=0.85)
-for score, name1, name2 in top_pairs:
-    print(f"{name1} vs {name2}: Score = {score:.4f}")
+def run_analysis(data, corr_threshold=0.85):
+    # Load data
+    # data = load_data(csv_file_path)
+    names_all = data['Name']
+    dates_all = data['date']
+    close_all = data['close']
+
+    unique_names = np.unique(names_all)
+    unique_dates = np.unique(dates_all)
+    n_dates = len(unique_dates)
+    n_stocks = len(unique_names)
+
+    # Build price matrix
+    prices = np.full((n_dates, n_stocks), np.nan)
+    for j, name in enumerate(unique_names):
+        mask = names_all == name
+        stock_dates = dates_all[mask]
+        stock_prices = close_all[mask]
+        for d, p in zip(stock_dates, stock_prices):
+            idx = np.where(unique_dates == d)[0][0]
+            prices[idx, j] = p
+
+    # Remove columns (stocks) with missing data
+    valid = ~np.isnan(prices).any(axis=0)
+    prices = prices[:, valid]
+    stock_names = unique_names[valid]
+
+    top_pairs = evaluate_pairs(prices, stock_names, corr_threshold=corr_threshold)
+    return prices, stock_names, top_pairs, unique_dates
+
+if __name__ == "__main__":
+    prices, stock_names, top_pairs, unique_dates = run_analysis()
+    for score, name1, name2 in top_pairs:
+        print(f"{name1} vs {name2}: Score = {score:.4f}")
