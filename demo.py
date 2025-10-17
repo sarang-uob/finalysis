@@ -1,1 +1,0 @@
-# demo script for finalysis package
